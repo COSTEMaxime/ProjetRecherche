@@ -4,9 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Controller
+namespace Model
 {
-    public class Class1
+    public enum WalkingDirection
     {
+        NONE = -1,
+        ALL,
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT
     }
 }
