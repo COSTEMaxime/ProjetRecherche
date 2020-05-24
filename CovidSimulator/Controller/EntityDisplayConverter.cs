@@ -11,24 +11,24 @@ namespace Controller
 {
     public class EntityDisplayConverter
     {
-        static DisplayableElement ToDisplayableElement(Entity source)
+        static DisplayableElement ToDisplayableElement(IPosition source)
         {
             Color color = Color.White;
             if (source is Room)
             {
                 color = Color.Red;
-            } else if (source is MovableEntity)
+            } else if (source is Person)
             {
                 color = Color.Blue;
             }
 
-            return new DisplayableElement(source.position, color);
+            return new DisplayableElement(source.Position, color);
         }
 
-        public static List<DisplayableElement> ToDisplayableElements(List<Entity> source)
+        public static List<DisplayableElement> ToDisplayableElements(List<Node> source)
         {
             List<DisplayableElement> displayableElements = new List<DisplayableElement>();
-            foreach (Entity entity in source)
+            foreach (Node entity in source)
             {
                 displayableElements.Add(ToDisplayableElement(entity));
             }

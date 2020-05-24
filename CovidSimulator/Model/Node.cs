@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public abstract class Entity
+    public class Node : IPosition
     {
-        public Point position { get; set; }
+        public Point Position { get; set; }
         public float G { get; set; }
         public float H { get; set; }
         public float F { get; set; }
 
-        public Entity parent { get; set; }
+        public Node parent { get; set; }
         public WalkingDirection walkingDirection { get; set; }
 
-        public Entity(Point position, WalkingDirection walkingDirection)
+        public Node(Point position, WalkingDirection walkingDirection)
         {
-            this.position = position;
+            this.Position = position;
             this.walkingDirection = walkingDirection;
 
             G = H = F = 0;
             parent = null;
         }
 
-        public bool CanWalk(Entity dest)
+        public bool CanWalk(Node dest)
         {
             switch (dest.walkingDirection)
             {
@@ -35,13 +35,13 @@ namespace Model
                 case WalkingDirection.ALL:
                     return true;
                 case WalkingDirection.DOWN:
-                    return dest.position.Y > this.position.Y;
+                    return dest.Position.Y > this.Position.Y;
                 case WalkingDirection.UP:
-                    return dest.position.Y < this.position.Y;
+                    return dest.Position.Y < this.Position.Y;
                 case WalkingDirection.LEFT:
-                    return dest.position.X > this.position.X;
+                    return dest.Position.X > this.Position.X;
                 case WalkingDirection.RIGHT:
-                    return dest.position.X < this.position.X;
+                    return dest.Position.X < this.Position.X;
                 default:
                     throw new NotImplementedException("Walking Direction not implemented : " + dest.walkingDirection);
             }

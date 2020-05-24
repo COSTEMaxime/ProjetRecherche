@@ -42,12 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity.cs" />
+    <Compile Include="Administration.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="EntityLoader.cs" />
-    <Compile Include="MovableEntity.cs" />
+    <Compile Include="PersonTypes.cs" />
+    <Compile Include="PersonFactory.cs" />
+    <Compile Include="IPosition.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Room.cs" />
+    <Compile Include="Student.cs" />
+    <Compile Include="Tutor.cs" />
     <Compile Include="WalkingDirection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextFile1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

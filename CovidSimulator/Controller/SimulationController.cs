@@ -11,13 +11,13 @@ namespace Controller
 {
     public class SimulationController
     {
-        private List<List<Entity>> grid;
-        private List<MovableEntity> movableEntities;
+        private List<List<Node>> grid;
+        private List<Person> movableEntities;
         private List<Room> rooms;
 
         public System.Timers.Timer timer { get; private set; }
 
-        public SimulationController(List<List<Entity>> grid, List<MovableEntity> movableEntities, List<Room> rooms)
+        public SimulationController(List<List<Node>> grid, List<Person> movableEntities, List<Room> rooms)
         {
             this.grid = grid;
             this.movableEntities = movableEntities;

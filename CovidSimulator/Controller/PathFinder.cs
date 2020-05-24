@@ -10,9 +10,9 @@ namespace Controller
 {
     class PathFinder
     {
-        public List<Entity> open { get; private set; } = new List<Entity>();
-        public List<Entity> closed { get; private set; } = new List<Entity>();
-        public List<List<Entity>> grid { get; private set; } = new List<List<Entity>>();
+        public List<Node> open { get; private set; } = new List<Node>();
+        public List<Node> closed { get; private set; } = new List<Node>();
+        public List<List<Node>> grid { get; private set; } = new List<List<Node>>();
         int gridRows
         {
             get
@@ -28,18 +28,18 @@ namespace Controller
             }
         }
 
-        public PathFinder(List<List<Entity>> grid)
+        public PathFinder(List<List<Node>> grid)
         {
             this.grid = grid;
         }
 
-        public List<Entity> Pathfinding(Point from, Point destination)
+        public List<Node> Pathfinding(Point from, Point destination)
         {
             closed.Clear();
             open.Clear();
 
-            Entity goalNode = grid[destination.Y][destination.X];
-            Entity startNode = grid[from.Y][from.X];
+            Node goalNode = grid[destination.Y][destination.X];
+            Node startNode = grid[from.Y][from.X];
             startNode.F = ManhattanDistance(from, destination);
 
             open.Add(startNode);
@@ -47,8 +47,8 @@ namespace Controller
             while (open.Count > 0)
             {
                 // node with lowest F
-                Entity node = getBestNode();
-                if (node.position == goalNode.position)
+                Node node = getBestNode();
+                if (node.Position == goalNode.Position)
                 {
                     Console.WriteLine("Goal reached");
                     return getPath(node);
@@ -57,13 +57,13 @@ namespace Controller
                 open.Remove(node);
                 closed.Add(node);
 
-                List<Entity> neighbors = getNeighbors(node);
-                foreach (Entity n in neighbors)
+                List<Node> neighbors = getNeighbors(node);
+                foreach (Node n in neighbors)
                 {
                     if (!node.CanWalk(n) || closed.Contains(n)) { continue; }
 
                     float g_score = node.G + 1;
-                    float h_score = ManhattanDistance(n.position, goalNode.position);
+                    float h_score = ManhattanDistance(n.Position, goalNode.Position);
                     float f_score = g_score + h_score;
 
                     if (closed.Contains(n) && f_score >= n.F)
@@ -95,9 +95,9 @@ namespace Controller
         }
 
         // Walk parent nodes to find the path
-        private List<Entity> getPath(Entity node)
+        private List<Node> getPath(Node node)
         {
-            List<Entity> path = new List<Entity>();
+            List<Node> path = new List<Node>();
             path.Add(node);
 
             while (node.parent != null)
@@ -110,11 +110,11 @@ namespace Controller
             return path;
         }
 
-        private Entity getBestNode()
+        private Node getBestNode()
         {
-            Entity minNode = open[0];
+            Node minNode = open[0];
 
-            foreach (Entity curr in open)
+            foreach (Node curr in open)
             {
                 if (curr.F < minNode.F)
                 {
@@ -124,12 +124,12 @@ namespace Controller
             return minNode;
         }
 
-        private List<Entity> getNeighbors(Entity node)
+        private List<Node> getNeighbors(Node node)
         {
-            List<Entity> neighbors = new List<Entity>();
+            List<Node> neighbors = new List<Node>();
 
-            int row = node.position.Y;
-            int col = node.position.X;
+            int row = node.Position.Y;
+            int col = node.Position.X;
 
             if (col + 1 < gridRows)
             {

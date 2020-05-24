@@ -22,6 +22,18 @@ namespace Main
             EntityLoader loader = new EntityLoader();
             loader.LoadFromFile("map.txt");
 
+            foreach (var item in loader.grid)
+            {
+                foreach (var node in item)
+                {
+                    Console.Write(node.walkingDirection.ToString());
+                }
+                Console.WriteLine("");
+            }
+
+            Console.WriteLine(loader.movableEntities.First().Name);
+            Console.WriteLine(loader.rooms.First().Name);
+
             List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList());
             SimulationForm simulation = new SimulationForm(displayableGrid);
 
