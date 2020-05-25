@@ -1,13 +1,11 @@
 ﻿using Controller;
 using Model;
 using System;
-using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using View;
 using System.Threading;
+using System.Windows.Forms;
+using View;
 
 namespace Main
 {
@@ -34,21 +32,21 @@ namespace Main
             Console.WriteLine(loader.movableEntities.First().Name);
             Console.WriteLine(loader.rooms.First().Name);
 
-            List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList());
-            SimulationForm simulation = new SimulationForm(displayableGrid);
+            List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList<IPosition>());
+            SimulationForm simulationForm = new SimulationForm(displayableGrid);
 
-            SimulationController controller = new SimulationController(loader.grid, loader.movableEntities, loader.rooms);
+            SimulationController controller = new SimulationController(simulationForm, loader.grid, loader.movableEntities, loader.rooms);
 
 
             // close event from the GUI
-            // simulation.onCloseEvent += (object sender, EventArgs e) => controller.Dispose_();
+            simulationForm.onCloseEvent += (object sender, EventArgs e) => controller.Dispose();
             // close event from the console
-            // AppDomain.CurrentDomain.ProcessExit += new EventHandler((object sender, EventArgs e) => controller.Dispose_());
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler((object sender, EventArgs e) => controller.Dispose());
 
             Thread controllerThread = new Thread(controller.start);
-            controllerThread.Start();
+            simulationForm.onShowEvent += new EventHandler((object sender, EventArgs e) => controllerThread.Start());
 
-            Application.Run(simulation);
+            Application.Run(simulationForm);
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace View
@@ -14,33 +9,82 @@ namespace View
     {
         private List<DisplayableElement> grid;
         public event EventHandler onCloseEvent;
+        public event EventHandler onShowEvent;
+
+        private List<PictureBox> pictureBoxes;
 
         public SimulationForm(List<DisplayableElement> grid)
         {
             InitializeComponent();
             this.grid = grid;
+
+            init();
         }
 
-        public void drawElements(List<DisplayableElement> elements)
+        private void init()
         {
-            Invoke(new MethodInvoker(() => { Controls.Clear(); }));
+            pictureBoxes = new List<PictureBox>();
 
-            foreach (DisplayableElement element in elements)
+            foreach (DisplayableElement element in grid)
             {
                 PictureBox pict = new PictureBox
                 {
                     Location = new Point(element.position.X * DisplayableElement.SIZE, element.position.Y * DisplayableElement.SIZE),
-                    Size = new Size(DisplayableElement.SIZE, DisplayableElement.SIZE),
-                    BackColor = element.color
+                    Size = new Size(DisplayableElement.SIZE, DisplayableElement.SIZE)
                 };
 
-                this.Invoke(new MethodInvoker(() => { Controls.Add(pict); }));
+                if (element.image != null)
+                {
+                    pict.Image = element.image;
+                }
+                else
+                {
+                    pict.BackColor = (Color)element.color;
+                }
+
+                pictureBoxes.Add(pict);
             }
+        }
+
+        private void drawElements(List<DisplayableElement> elements)
+        {
+            foreach (DisplayableElement element in elements)
+            {
+                PictureBox pictureBox = pictureBoxes.Find(x => x.Location.X == element.position.X * DisplayableElement.SIZE && x.Location.Y == element.position.Y * DisplayableElement.SIZE);
+                if (pictureBox == null)
+                {
+                    throw new Exception("Should not be there");
+                }
+                else if (element.color != null && pictureBox.BackColor != element.color)
+                {
+                    pictureBox.BackColor = (Color)element.color;
+                    pictureBox.Image = null;
+                }
+                else if (element.image != null && pictureBox.Image != element.image)
+                {
+                    pictureBox.Image = element.image;
+                    pictureBox.BackColor = Color.White;
+                }
+            }
+        }
+
+        public void refresh(List<DisplayableElement> elements)
+        {
+            drawElements(grid);
+            drawElements(elements);
         }
 
         private void SimulationForm_Shown(object sender, EventArgs e)
         {
-            drawElements(grid);
+            this.AutoSize = true;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            foreach (PictureBox pictureBox in pictureBoxes)
+            {
+                Invoke(new MethodInvoker(() => { Controls.Add(pictureBox); }));
+            }
+
+            onShowEvent?.Invoke(this, new EventArgs());
         }
 
         private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e)

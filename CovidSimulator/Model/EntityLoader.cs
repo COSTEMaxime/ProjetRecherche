@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -40,7 +36,7 @@ namespace Model
                         if (line[i] == '#')
                             tempList.Add(new Node(new Point(i, lineNb), WalkingDirection.NONE));
                         else
-                            tempList.Add(new Node(new Point(i, lineNb), (WalkingDirection) int.Parse(line[i].ToString())));
+                            tempList.Add(new Node(new Point(i, lineNb), (WalkingDirection)int.Parse(line[i].ToString())));
                     }
                     tempGrid.Add(tempList);
                 }
@@ -56,7 +52,7 @@ namespace Model
                     else
                     {
                         string[] trimed = line.Substring(2).Split(',');
-                        tempMoveable.Add(PersonFactory.CreatePerson((PersonTypes) int.Parse(line[1].ToString()), new Point(int.Parse(trimed[1]), int.Parse(trimed[0])), trimed[2]));
+                        tempMoveable.Add(PersonFactory.CreatePerson((PersonTypes)int.Parse(line[1].ToString()), new Point(int.Parse(trimed[1]), int.Parse(trimed[0])), trimed[2]));
                     }
                 }
                 lineNb++;

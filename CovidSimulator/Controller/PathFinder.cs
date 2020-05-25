@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Controller
 {
@@ -33,8 +30,16 @@ namespace Controller
             this.grid = grid;
         }
 
-        public List<Node> Pathfinding(Point from, Point destination)
+        public Stack<Point> Pathfinding(Point from, Point destination)
         {
+            foreach (List<Node> list in grid)
+            {
+                foreach (Node node in list)
+                {
+                    node.Reset();
+                }
+            }
+
             closed.Clear();
             open.Clear();
 
@@ -50,7 +55,6 @@ namespace Controller
                 Node node = getBestNode();
                 if (node.Position == goalNode.Position)
                 {
-                    Console.WriteLine("Goal reached");
                     return getPath(node);
                 }
 
@@ -95,18 +99,17 @@ namespace Controller
         }
 
         // Walk parent nodes to find the path
-        private List<Node> getPath(Node node)
+        private Stack<Point> getPath(Node node)
         {
-            List<Node> path = new List<Node>();
-            path.Add(node);
+            Stack<Point> path = new Stack<Point>();
+            path.Push(node.Position);
 
             while (node.parent != null)
             {
-                path.Add(node.parent);
+                path.Push(node.parent.Position);
                 node = node.parent;
             }
 
-            path.Add(node);
             return path;
         }
 

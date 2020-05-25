@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -28,7 +24,7 @@ namespace Model
 
         public bool CanWalk(Node dest)
         {
-            switch (dest.walkingDirection)
+            switch (walkingDirection)
             {
                 case WalkingDirection.NONE:
                     return false;
@@ -39,12 +35,18 @@ namespace Model
                 case WalkingDirection.UP:
                     return dest.Position.Y < this.Position.Y;
                 case WalkingDirection.LEFT:
-                    return dest.Position.X > this.Position.X;
-                case WalkingDirection.RIGHT:
                     return dest.Position.X < this.Position.X;
+                case WalkingDirection.RIGHT:
+                    return dest.Position.X > this.Position.X;
                 default:
                     throw new NotImplementedException("Walking Direction not implemented : " + dest.walkingDirection);
             }
+        }
+
+        public void Reset()
+        {
+            G = H = F = 0;
+            parent = null;
         }
     }
 }

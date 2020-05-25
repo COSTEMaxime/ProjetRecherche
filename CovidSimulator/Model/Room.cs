@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -25,7 +21,7 @@ namespace Model
             NbCurrentPeople = 0;
         }
 
-        public void EnterRoom (Person person)
+        public void EnterRoom(Person person)
         {
             if (!Persons.Contains(person))
             {
