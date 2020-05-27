@@ -6,6 +6,7 @@ namespace Model
     {
         public Tutor(Point location, string name) : base(location, name)
         {
+            Type = PersonTypes.TUTOR;
         }
     }
 }

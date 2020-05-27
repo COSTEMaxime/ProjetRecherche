@@ -61,8 +61,12 @@ namespace Controller
                 if (person.Path.Count == 0)
                 {
                     // try to find a new objective
-                    // TODO
-                    person.Path = pathFinder.Pathfinding(person.Position, new Point(1, 1));
+                    if (person.WantToMove())
+                    {
+                        Room destination = person.SelectDestination(ListPossibleRooms(person.Type));
+                        person.Path = pathFinder.Pathfinding(person.Position, destination.Position);
+                    }
+                    else { person.AsMoved = true; }
                 }
                 else
                 {
@@ -102,6 +106,11 @@ namespace Controller
         {
             List<DisplayableElement> elements = EntityDisplayConverter.ToDisplayableElements(movableEntities.ToList<IPosition>());
             simulationForm.refresh(elements);
+        }
+
+        private List<Room> ListPossibleRooms (PersonTypes type)
+        {
+            return rooms.FindAll(room => room.Allowed.Contains(type));
         }
 
         protected virtual void Dispose(bool disposing)

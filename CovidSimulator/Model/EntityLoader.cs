@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace Model
 {
@@ -46,8 +47,14 @@ namespace Model
                     if (line[1] == 'R')
                     {
                         string[] trimed = line.Substring(2).Split(',');
-                        tempRooms.Add(new Room(new Point(int.Parse(trimed[1]), int.Parse(trimed[0])), trimed[2], int.Parse(trimed[3])));
+                        List<PersonTypes> allowed = new List<PersonTypes>();
 
+                        foreach (string idPersonType in trimed[4].Split(';'))
+                        {
+                            allowed.Add((PersonTypes)int.Parse(idPersonType));
+                        }
+
+                        tempRooms.Add(new Room(new Point(int.Parse(trimed[1]), int.Parse(trimed[0])), trimed[2], int.Parse(trimed[3]), allowed));
                     }
                     else
                     {

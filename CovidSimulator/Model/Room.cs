@@ -10,15 +10,17 @@ namespace Model
         public int NbCurrentPeople;
         public int NbMaxPeople;
 
+        public List<PersonTypes> Allowed;
 
         public List<Person> Persons = new List<Person>();
 
-        public Room(Point location, string name, int maxPeople)
+        public Room(Point location, string name, int maxPeople, List<PersonTypes> allowed)
         {
             Position = location;
             Name = name;
             NbMaxPeople = maxPeople;
             NbCurrentPeople = 0;
+            Allowed = allowed;
         }
 
         public void EnterRoom(Person person)

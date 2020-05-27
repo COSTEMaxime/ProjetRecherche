@@ -6,6 +6,7 @@ namespace Model
     {
         public Student(Point location, string name) : base(location, name)
         {
+            Type = PersonTypes.STUDENT;
         }
     }
 }

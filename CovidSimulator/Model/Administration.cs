@@ -6,6 +6,7 @@ namespace Model
     {
         public Administration(Point location, string name) : base(location, name)
         {
+            Type = PersonTypes.ADMINISTRATION;
         }
     }
 }
