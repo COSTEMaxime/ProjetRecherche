@@ -40,6 +40,7 @@ namespace Controller
             Console.WriteLine("Tick");
 
             update();
+            stats();
             redraw();
         }
 
@@ -67,6 +68,12 @@ namespace Controller
                         Console.WriteLine(person.Name + " will choose a new direction");
                         Room destination = person.SelectDestination(ListPossibleRooms(person.Type));
                         person.Path = pathFinder.Pathfinding(person.Position, destination.Position);
+
+                        Room source = rooms.Find(r => r.Position == person.Position);
+                        if (source != null)
+                        {
+                            source.LeaveRoom(person);
+                        }
                     }
                     else { person.AsMoved = true; }
                 }
@@ -80,8 +87,14 @@ namespace Controller
 
                         if (other.Position == nextPosition)
                         {
-                            if (other.Path.Peek() == nextPosition && !other.AsMoved)
+                            if (rooms.Find(r => r.Position == nextPosition) != null)
                             {
+                                // go inside a room
+                                break;
+                            }
+                            else if (other.Path.Peek() == person.Position && !other.AsMoved)
+                            {
+                                Console.WriteLine("SWAP");
                                 // swap
                                 other.Position = other.Path.Pop();
                                 person.Position = person.Path.Pop();
@@ -100,6 +113,35 @@ namespace Controller
                     {
                         person.Position = person.Path.Pop();
                     }
+
+                    if (person.Path.Count == 0)
+                    {
+                        Room room = rooms.Find(r => r.Position == person.Position);
+                        room.EnterRoom(person);
+                    }
+                }
+            }
+        }
+
+        private void stats()
+        {
+            foreach (Person person in movableEntities)
+            {
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1)) != null)
+                {
+                    Console.WriteLine("Too close !");
+                }
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1)) != null)
+                {
+                    Console.WriteLine("Too close !");
+                }
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y)) != null)
+                {
+                    Console.WriteLine("Too close !");
+                }
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y)) != null)
+                {
+                    Console.WriteLine("Too close !");
                 }
             }
         }
