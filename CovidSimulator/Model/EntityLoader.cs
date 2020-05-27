@@ -7,9 +7,6 @@ namespace Model
 {
     public class EntityLoader
     {
-
-        string filePath = "TextFile2.txt";
-
         public List<List<Node>> grid { get; private set; }
         public List<Person> movableEntities { get; private set; }
         public List<Room> rooms { get; private set; }
@@ -18,7 +15,7 @@ namespace Model
         {
             // Load from file
 
-            string[] FileContent = File.ReadAllLines(filePath);
+            string[] FileContent = File.ReadAllLines(path);
 
             List<List<Node>> tempGrid = new List<List<Node>>();
             List<Person> tempMoveable = new List<Person>();

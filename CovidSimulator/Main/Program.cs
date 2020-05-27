@@ -18,7 +18,7 @@ namespace Main
             Application.SetCompatibleTextRenderingDefault(false);
 
             EntityLoader loader = new EntityLoader();
-            loader.LoadFromFile("map.txt");
+            loader.LoadFromFile("TextFile2.txt");
 
             foreach (var item in loader.grid)
             {
