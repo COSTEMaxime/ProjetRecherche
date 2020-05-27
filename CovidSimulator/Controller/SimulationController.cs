@@ -56,6 +56,7 @@ namespace Controller
 
             foreach (Person person in movableEntities)
             {
+                Console.WriteLine(person.Name + " turn");
                 if (person.AsMoved) { continue; }
 
                 if (person.Path.Count == 0)
@@ -63,6 +64,7 @@ namespace Controller
                     // try to find a new objective
                     if (person.WantToMove())
                     {
+                        Console.WriteLine(person.Name + " will choose a new direction");
                         Room destination = person.SelectDestination(ListPossibleRooms(person.Type));
                         person.Path = pathFinder.Pathfinding(person.Position, destination.Position);
                     }

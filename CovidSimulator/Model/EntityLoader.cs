@@ -8,7 +8,7 @@ namespace Model
     public class EntityLoader
     {
 
-        string filePath = "TextFile1.txt";
+        string filePath = "TextFile2.txt";
 
         public List<List<Node>> grid { get; private set; }
         public List<Person> movableEntities { get; private set; }
@@ -54,12 +54,12 @@ namespace Model
                             allowed.Add((PersonTypes)int.Parse(idPersonType));
                         }
 
-                        tempRooms.Add(new Room(new Point(int.Parse(trimed[1]), int.Parse(trimed[0])), trimed[2], int.Parse(trimed[3]), allowed));
+                        tempRooms.Add(new Room(new Point(int.Parse(trimed[0]), int.Parse(trimed[1])), trimed[2], int.Parse(trimed[3]), allowed));
                     }
                     else
                     {
                         string[] trimed = line.Substring(2).Split(',');
-                        tempMoveable.Add(PersonFactory.CreatePerson((PersonTypes)int.Parse(line[1].ToString()), new Point(int.Parse(trimed[1]), int.Parse(trimed[0])), trimed[2]));
+                        tempMoveable.Add(PersonFactory.CreatePerson((PersonTypes)int.Parse(line[1].ToString()), new Point(int.Parse(trimed[0]), int.Parse(trimed[1])), trimed[2]));
                     }
                 }
                 lineNb++;

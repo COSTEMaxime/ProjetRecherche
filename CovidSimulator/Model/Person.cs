@@ -28,7 +28,7 @@ namespace Model
 
             Path = new Stack<Point>();
 
-            rnd = new Random();
+            rnd = new Random(Guid.NewGuid().GetHashCode());
         }
 
         public Room SelectDestination(List<Room> destinations)
