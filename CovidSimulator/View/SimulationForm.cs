@@ -76,14 +76,13 @@ namespace View
 
         private void SimulationForm_Shown(object sender, EventArgs e)
         {
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
             foreach (PictureBox pictureBox in pictureBoxes)
             {
                 Invoke(new MethodInvoker(() => { Controls.Add(pictureBox); }));
             }
 
+            this.AutoSize = true;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             onShowEvent?.Invoke(this, new EventArgs());
         }
 
