@@ -104,7 +104,8 @@ namespace Controller
 
         private void redraw()
         {
-            List<DisplayableElement> elements = EntityDisplayConverter.ToDisplayableElements(movableEntities.ToList<IPosition>());
+            List<DisplayableElement> elements = EntityDisplayConverter.ToDisplayableElements(rooms.ToList<IPosition>());
+            elements.AddRange(EntityDisplayConverter.ToDisplayableElements(movableEntities.ToList<IPosition>()));
             simulationForm.refresh(elements);
         }
 
