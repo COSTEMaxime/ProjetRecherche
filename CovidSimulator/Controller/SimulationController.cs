@@ -87,12 +87,12 @@ namespace Controller
                                 person.Position = person.Path.Pop();
                                 break;
                             }
-                        }
-                        else
-                        {
-                            // wait
-                            person.AsMoved = true;
-                            break;
+                            else
+                            {
+                                // wait
+                                person.AsMoved = true;
+                                break;
+                            }
                         }
                     }
 
