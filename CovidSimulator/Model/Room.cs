@@ -31,7 +31,6 @@ namespace Model
                 Persons.Add(person);
                 NbCurrentPeople++;
                 // TODO : Check MaxPeople & Trigger event ?
-                Console.WriteLine("{0} entered room {1}", person.Name, this.Name);
             }
         }
 
@@ -40,7 +39,6 @@ namespace Model
             if (Persons.Remove(person))
                 NbCurrentPeople--;
             // TODO : Trigger event if under the MaxPeople Threshold
-            Console.WriteLine("{0} leaved room {1}", person.Name, this.Name);
         }
     }
 }

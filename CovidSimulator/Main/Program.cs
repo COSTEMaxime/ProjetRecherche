@@ -1,5 +1,6 @@
 ﻿using Controller;
 using Model;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,26 +12,18 @@ namespace Main
 {
     class Program
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         [STAThread]
         static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            LoggerSetup();
+
             EntityLoader loader = new EntityLoader();
             loader.LoadFromFile("TextFile2.txt");
-
-            foreach (var item in loader.grid)
-            {
-                foreach (var node in item)
-                {
-                    Console.Write(node.walkingDirection.ToString());
-                }
-                Console.WriteLine("");
-            }
-
-            Console.WriteLine(loader.movableEntities.First().Name);
-            Console.WriteLine(loader.rooms.First().Name);
 
             List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList<IPosition>());
             SimulationForm simulationForm = new SimulationForm(displayableGrid);
@@ -48,5 +41,20 @@ namespace Main
 
             Application.Run(simulationForm);
         }
+
+        private static void LoggerSetup()
+        {
+            //Logger configuration
+            var config = new NLog.Config.LoggingConfiguration();
+            // Where to lo to: File & Console
+            var logFile = new NLog.Targets.FileTarget("logFile") { FileName = "log_file.txt" };
+            var logConsole = new NLog.Targets.ConsoleTarget("logConsole");
+            // Logging rules (where to log what)
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logFile);
+
+            LogManager.Configuration = config;
+        }
+
     }
 }

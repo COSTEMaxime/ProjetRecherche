@@ -21,6 +21,8 @@ namespace Controller
 
         public System.Timers.Timer timer { get; private set; }
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public SimulationController(SimulationForm simulationForm, List<List<Node>> grid, List<Person> movableEntities, List<Room> rooms)
         {
             this.simulationForm = simulationForm;
@@ -37,8 +39,6 @@ namespace Controller
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("Tick");
-
             update();
             stats();
             redraw();
@@ -57,7 +57,6 @@ namespace Controller
 
             foreach (Person person in movableEntities)
             {
-                Console.WriteLine(person.Name + " turn");
                 if (person.AsMoved) { continue; }
 
                 if (person.Path.Count == 0)
@@ -65,7 +64,6 @@ namespace Controller
                     // try to find a new objective
                     if (person.WantToMove())
                     {
-                        Console.WriteLine(person.Name + " will choose a new direction");
                         Room destination = person.SelectDestination(ListPossibleRooms(person.Type));
                         person.Path = pathFinder.Pathfinding(person.Position, destination.Position);
 
@@ -94,7 +92,6 @@ namespace Controller
                             }
                             else if (other.Path.Peek() == person.Position && !other.AsMoved)
                             {
-                                Console.WriteLine("SWAP");
                                 // swap
                                 other.Position = other.Path.Pop();
                                 person.Position = person.Path.Pop();
@@ -129,19 +126,43 @@ namespace Controller
             {
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1)) != null)
                 {
-                    Console.WriteLine("Too close !");
+                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1));
+                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
+                        person.Name,
+                        person.Position.X + ";" + person.Position.Y,
+                        otherPerson.Name,
+                        otherPerson.Position.X + ";" + otherPerson.Position.Y
+                    );
                 }
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1)) != null)
                 {
-                    Console.WriteLine("Too close !");
+                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1));
+                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
+                        person.Name,
+                        person.Position.X + ";" + person.Position.Y,
+                        otherPerson.Name,
+                        otherPerson.Position.X + ";" + otherPerson.Position.Y
+                    );
                 }
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y)) != null)
                 {
-                    Console.WriteLine("Too close !");
+                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y));
+                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
+                        person.Name,
+                        person.Position.X + ";" + person.Position.Y,
+                        otherPerson.Name,
+                        otherPerson.Position.X + ";" + otherPerson.Position.Y
+                    );
                 }
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y)) != null)
                 {
-                    Console.WriteLine("Too close !");
+                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y));
+                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
+                        person.Name,
+                        person.Position.X + ";" + person.Position.Y,
+                        otherPerson.Name,
+                        otherPerson.Position.X + ";" + otherPerson.Position.Y
+                    );
                 }
             }
         }
