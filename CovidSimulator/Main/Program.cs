@@ -26,7 +26,8 @@ namespace Main
             loader.LoadFromFile("TextFile2.txt");
 
             List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList<IPosition>());
-            SimulationForm simulationForm = new SimulationForm(displayableGrid);
+            List<DisplayableElement> displayableRooms = EntityDisplayConverter.ToDisplayableElements(loader.rooms.ToList<IPosition>());
+            SimulationForm simulationForm = new SimulationForm(displayableGrid, displayableRooms);
 
             SimulationController controller = new SimulationController(simulationForm, loader.grid, loader.movableEntities, loader.rooms);
 
