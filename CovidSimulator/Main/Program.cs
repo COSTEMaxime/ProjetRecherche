@@ -50,8 +50,8 @@ namespace Main
             var logFile = new NLog.Targets.FileTarget("logFile") { FileName = "log_file.txt" };
             var logConsole = new NLog.Targets.ConsoleTarget("logConsole");
             // Logging rules (where to log what)
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
             config.AddRule(LogLevel.Debug, LogLevel.Fatal, logFile);
+            config.AddRule(LogLevel.Warn, LogLevel.Fatal, logConsole);
 
             LogManager.Configuration = config;
         }

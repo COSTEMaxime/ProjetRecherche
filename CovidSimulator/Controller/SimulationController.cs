@@ -10,7 +10,6 @@ namespace Controller
 {
     public class SimulationController : IDisposable
     {
-        private List<List<Node>> grid;
         private List<Person> movableEntities;
         private List<Room> rooms;
         private bool disposedValue;
@@ -23,22 +22,38 @@ namespace Controller
 
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        // each tick represents 30s
+        private static int SIMULATION_MAX_TICK = 8 * 60 * 2;
+        // delay between each tick
+        private static int TICK_SPEED_MS = 25;
+        private int tickCount;
+
         public SimulationController(SimulationForm simulationForm, List<List<Node>> grid, List<Person> movableEntities, List<Room> rooms)
         {
             this.simulationForm = simulationForm;
 
-            this.grid = grid;
             this.movableEntities = movableEntities;
             this.rooms = rooms;
 
+            this.tickCount = 0;
+
             this.pathFinder = new PathFinder(grid);
 
-            timer = new System.Timers.Timer(500);
+            timer = new System.Timers.Timer(TICK_SPEED_MS);
             timer.Elapsed += OnTimedEvent;
+
+            logger.Info("Started new simulation");
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
+            if (tickCount++ > SIMULATION_MAX_TICK)
+            {
+                // close program ?
+                // compute stats ?
+                this.Dispose();
+            }
+
             update();
             stats();
             redraw();
@@ -174,7 +189,7 @@ namespace Controller
             simulationForm.refresh(elements);
         }
 
-        private List<Room> ListPossibleRooms (PersonTypes type)
+        private List<Room> ListPossibleRooms(PersonTypes type)
         {
             return rooms.FindAll(room => room.Allowed.Contains(type));
         }
