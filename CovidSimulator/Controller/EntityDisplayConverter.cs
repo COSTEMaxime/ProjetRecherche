@@ -31,16 +31,16 @@ namespace Controller
                         color = Color.Black;
                         break;
                     case WalkingDirection.LEFT:
-                        image = Image.FromFile("../../../Assets/left.png");
+                        image = Image.FromFile("../../../Assets/left_16.png");
                         break;
                     case WalkingDirection.RIGHT:
-                        image = Image.FromFile("../../../Assets/right.png");
+                        image = Image.FromFile("../../../Assets/right_16.png");
                         break;
                     case WalkingDirection.UP:
-                        image = Image.FromFile("../../../Assets/up.png");
+                        image = Image.FromFile("../../../Assets/up_16.png");
                         break;
                     case WalkingDirection.DOWN:
-                        image = Image.FromFile("../../../Assets/down.png");
+                        image = Image.FromFile("../../../Assets/down_16.png");
                         break;
                 }
             }

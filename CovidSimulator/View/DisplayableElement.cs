@@ -4,7 +4,7 @@ namespace View
 {
     public class DisplayableElement
     {
-        public static int SIZE = 32;
+        public static int SIZE = 16;
 
         public Point position { get; private set; }
         public Color? color { get; private set; } = null;
