@@ -50,6 +50,7 @@
     <Compile Include="IPosition.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Room.cs" />
+    <Compile Include="StatsAggregator.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="Tutor.cs" />
     <Compile Include="WalkingDirection.cs" />

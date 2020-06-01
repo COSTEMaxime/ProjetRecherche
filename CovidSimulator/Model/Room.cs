@@ -6,9 +6,11 @@ namespace Model
     public class Room : IPosition
     {
         public Point Position { get; }
+
         public string Name;
         public int NbCurrentPeople;
         public int NbMaxPeople;
+        public int AllTimeMax { get; private set; }
 
         public List<PersonTypes> Allowed;
 
@@ -29,7 +31,11 @@ namespace Model
             {
                 Persons.Add(person);
                 NbCurrentPeople++;
-                // TODO : Check MaxPeople & Trigger event ?
+
+                if (NbCurrentPeople > AllTimeMax)
+                {
+                    AllTimeMax = NbCurrentPeople;
+                }
             }
         }
 
@@ -37,7 +43,6 @@ namespace Model
         {
             if (Persons.Remove(person))
                 NbCurrentPeople--;
-            // TODO : Trigger event if under the MaxPeople Threshold
         }
     }
 }

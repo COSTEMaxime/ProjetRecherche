@@ -15,12 +15,12 @@ namespace Controller
         private bool disposedValue;
 
         private PathFinder pathFinder;
-
         private SimulationForm simulationForm;
-
-        public System.Timers.Timer timer { get; private set; }
+        private System.Timers.Timer timer;
 
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private StatsAggregator statsAggregator;
 
         // each tick represents 30s
         private static int SIMULATION_MAX_TICK = 8 * 60 * 2;
@@ -38,6 +38,7 @@ namespace Controller
             this.tickCount = 0;
 
             this.pathFinder = new PathFinder(grid);
+            this.statsAggregator = new StatsAggregator();
 
             timer = new System.Timers.Timer(TICK_SPEED_MS);
             timer.Elapsed += OnTimedEvent;
@@ -49,9 +50,9 @@ namespace Controller
         {
             if (tickCount++ > SIMULATION_MAX_TICK)
             {
-                // close program ?
-                // compute stats ?
-                this.Dispose();
+                timer.Stop();
+
+                statsAggregator.consoleDisplay();
             }
 
             update();
@@ -148,6 +149,8 @@ namespace Controller
                         otherPerson.Name,
                         otherPerson.Position.X + ";" + otherPerson.Position.Y
                     );
+
+                    statsAggregator.AddPeopleTooClose(person, otherPerson);
                 }
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1)) != null)
                 {
@@ -158,6 +161,8 @@ namespace Controller
                         otherPerson.Name,
                         otherPerson.Position.X + ";" + otherPerson.Position.Y
                     );
+
+                    statsAggregator.AddPeopleTooClose(person, otherPerson);
                 }
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y)) != null)
                 {
@@ -168,6 +173,8 @@ namespace Controller
                         otherPerson.Name,
                         otherPerson.Position.X + ";" + otherPerson.Position.Y
                     );
+
+                    statsAggregator.AddPeopleTooClose(person, otherPerson);
                 }
                 if (movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y)) != null)
                 {
@@ -178,6 +185,16 @@ namespace Controller
                         otherPerson.Name,
                         otherPerson.Position.X + ";" + otherPerson.Position.Y
                     );
+
+                    statsAggregator.AddPeopleTooClose(person, otherPerson);
+                }
+            }
+
+            foreach (Room room in rooms)
+            {
+                if (room.NbCurrentPeople > room.NbMaxPeople)
+                {
+                    statsAggregator.AddOvercrowdedRoom(room);
                 }
             }
         }
