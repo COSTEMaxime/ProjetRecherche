@@ -106,7 +106,7 @@ namespace Controller
                                 // go inside a room
                                 break;
                             }
-                            else if (other.Path.Peek() == person.Position && !other.AsMoved)
+                            else if (other.Path.Count != 0 && other.Path.Peek() == person.Position && !other.AsMoved)
                             {
                                 // swap
                                 other.Position = other.Path.Pop();
