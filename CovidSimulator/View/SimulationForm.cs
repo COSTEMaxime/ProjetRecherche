@@ -13,12 +13,13 @@ namespace View
 
         private List<PictureBox> pictureBoxes;
 
-        public SimulationForm(List<DisplayableElement> grid)
+        public SimulationForm(List<DisplayableElement> grid, List<DisplayableElement> rooms)
         {
             InitializeComponent();
             this.grid = grid;
 
             init();
+            overrideGridWithElements(rooms);
         }
 
         private void init()
@@ -46,11 +47,29 @@ namespace View
             }
         }
 
+        private void overrideGridWithElements(List<DisplayableElement> rooms)
+        {
+            foreach (DisplayableElement room in rooms)
+            {
+                grid.Remove(grid.Find(x => x.position == room.position));
+
+                if (room.color != null)
+                {
+                    grid.Add(new DisplayableElement(room.position, (Color)room.color));
+                }
+                else
+                {
+                    grid.Add(new DisplayableElement(room.position, room.image));
+                }
+            }
+        }
+
         private void drawElements(List<DisplayableElement> elements)
         {
             foreach (DisplayableElement element in elements)
             {
                 PictureBox pictureBox = pictureBoxes.Find(x => x.Location.X == element.position.X * DisplayableElement.SIZE && x.Location.Y == element.position.Y * DisplayableElement.SIZE);
+
                 if (pictureBox == null)
                 {
                     throw new Exception("Should not be there");

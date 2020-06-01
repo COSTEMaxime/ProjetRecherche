@@ -26,7 +26,8 @@ namespace Main
             loader.LoadFromFile("TextFile2.txt");
 
             List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList<IPosition>());
-            SimulationForm simulationForm = new SimulationForm(displayableGrid);
+            List<DisplayableElement> displayableRooms = EntityDisplayConverter.ToDisplayableElements(loader.rooms.ToList<IPosition>());
+            SimulationForm simulationForm = new SimulationForm(displayableGrid, displayableRooms);
 
             SimulationController controller = new SimulationController(simulationForm, loader.grid, loader.movableEntities, loader.rooms);
 
@@ -50,8 +51,8 @@ namespace Main
             var logFile = new NLog.Targets.FileTarget("logFile") { FileName = "log_file.txt" };
             var logConsole = new NLog.Targets.ConsoleTarget("logConsole");
             // Logging rules (where to log what)
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
             config.AddRule(LogLevel.Debug, LogLevel.Fatal, logFile);
+            config.AddRule(LogLevel.Warn, LogLevel.Fatal, logConsole);
 
             LogManager.Configuration = config;
         }
