@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace Model
 {
@@ -26,20 +27,11 @@ namespace Model
                 // Generate Walls & Air
                 if (line[0] != '/')
                 {
-                    List<Node> tempList = new List<Node>();
-
-                    for (int i = 0; i < line.Length; i++)
-                    {
-                        if (line[i] == '#')
-                            tempList.Add(new Node(new Point(i, lineNb), WalkingDirection.NONE));
-                        else
-                            tempList.Add(new Node(new Point(i, lineNb), (WalkingDirection)int.Parse(line[i].ToString())));
-                    }
-                    tempGrid.Add(tempList);
+                    tempGrid.Add(CreateNodeRow(line, lineNb));
                 }
                 else
                 {
-
+                    // Create Rooms
                     if (line[1] == 'R')
                     {
                         string[] trimed = line.Substring(2).Split(',');
@@ -52,10 +44,22 @@ namespace Model
 
                         tempRooms.Add(new Room(new Point(int.Parse(trimed[0]), int.Parse(trimed[1])), trimed[2], int.Parse(trimed[3]), allowed));
                     }
-                    else
+                    else // Create Persons
                     {
                         string[] trimed = line.Substring(2).Split(',');
-                        tempMoveable.Add(PersonFactory.CreatePerson((PersonTypes)int.Parse(line[1].ToString()), new Point(int.Parse(trimed[0]), int.Parse(trimed[1])), trimed[2]));
+                        
+                        Room mainRoom = null;
+
+                        if (trimed.Length == 4)
+                            mainRoom = tempRooms.Find(r => r.Name == trimed[3]);
+
+                        // Creation of multiple persons
+                        for (int i = 0; i < int.Parse(trimed[2]); i++)
+                        {
+                            string tempName = ((PersonTypes)int.Parse(line[1].ToString())).ToString() + (tempMoveable.Count + 1);
+
+                            tempMoveable.Add(GeneratePerson(line[1].ToString(), trimed[0], trimed[1], tempName, mainRoom));
+                        }
                     }
                 }
                 lineNb++;
@@ -63,6 +67,28 @@ namespace Model
             grid = tempGrid;
             movableEntities = tempMoveable;
             rooms = tempRooms;
+        }
+
+        public List<Node> CreateNodeRow(string row, int rowNb)
+        {
+            List<Node> newRow = new List<Node>();
+
+            for (int i = 0; i < row.Length; i++)
+            {
+                if (row[i] == '#')
+                    newRow.Add(new Node(new Point(i, rowNb), WalkingDirection.NONE));
+                else
+                    newRow.Add(new Node(new Point(i, rowNb), (WalkingDirection)int.Parse(row[i].ToString())));
+            }
+            return newRow;
+        }
+
+        public Person GeneratePerson(string personType, string posX, string posY, string name, Room mainRoom)
+        {
+            Person newPerson = PersonFactory.CreatePerson((PersonTypes)int.Parse(personType), new Point(int.Parse(posX), int.Parse(posY)), name, mainRoom);
+            if(mainRoom != null && newPerson.Position == mainRoom.Position)
+                mainRoom.EnterRoom(newPerson);
+            return newPerson;
         }
     }
 }

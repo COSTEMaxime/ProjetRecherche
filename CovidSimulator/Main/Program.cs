@@ -13,7 +13,7 @@ namespace Main
     class Program
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
+        private static string filePath = "Load100.txt";
         [STAThread]
         static void Main(string[] args)
         {
@@ -23,7 +23,7 @@ namespace Main
             LoggerSetup();
 
             EntityLoader loader = new EntityLoader();
-            loader.LoadFromFile("TextFile2.txt");
+            loader.LoadFromFile(filePath);
 
             List<DisplayableElement> displayableGrid = EntityDisplayConverter.ToDisplayableElements(loader.grid.SelectMany(node => node).ToList<IPosition>());
             List<DisplayableElement> displayableRooms = EntityDisplayConverter.ToDisplayableElements(loader.rooms.ToList<IPosition>());
@@ -31,6 +31,9 @@ namespace Main
 
             SimulationController controller = new SimulationController(simulationForm, loader.grid, loader.movableEntities, loader.rooms);
 
+            Console.WriteLine("Starting Setup:");
+            Console.WriteLine("Seed file: {0}", filePath);
+            Console.WriteLine("Simulation with {0} people", loader.movableEntities.Count);
 
             // close event from the GUI
             simulationForm.onCloseEvent += (object sender, EventArgs e) => controller.Dispose();

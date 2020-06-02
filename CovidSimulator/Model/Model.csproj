@@ -60,10 +60,10 @@
     <Content Include="Load10.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Load10New.txt">
+    <Content Include="Load100.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Load10NoDirection.txt">
+    <Content Include="Load100NoDirection.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TextFile1.txt">

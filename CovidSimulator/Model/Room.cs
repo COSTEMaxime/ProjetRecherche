@@ -31,7 +31,7 @@ namespace Model
             {
                 Persons.Add(person);
                 NbCurrentPeople++;
-
+                person.EnterRoom(this);
                 if (NbCurrentPeople > AllTimeMax)
                 {
                     AllTimeMax = NbCurrentPeople;
@@ -42,7 +42,10 @@ namespace Model
         public void LeaveRoom(Person person)
         {
             if (Persons.Remove(person))
+            {
+                person.LeaveRoom();
                 NbCurrentPeople--;
+            }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Model
             Console.WriteLine("The following rooms where overcrowded :");
             foreach (var element in rooms)
             {
-                Console.WriteLine("{0} was overcrowded for {1} ticks (Authorized : {2}, max = {3}", element.Key.Name, element.Value, element.Key.NbMaxPeople, element.Key.AllTimeMax) ;
+                Console.WriteLine("{0} was overcrowded for {1} ticks (Authorized : {2}, max = {3})", element.Key.Name, element.Value, element.Key.NbMaxPeople, element.Key.AllTimeMax) ;
             }
         }
     }

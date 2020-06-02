@@ -25,7 +25,7 @@ namespace Controller
         // each tick represents 30s
         private static int SIMULATION_MAX_TICK = 8 * 60 * 2;
         // delay between each tick
-        private static int TICK_SPEED_MS = 25;
+        private static int TICK_SPEED_MS = 35;
         private int tickCount;
 
         public SimulationController(SimulationForm simulationForm, List<List<Node>> grid, List<Person> movableEntities, List<Room> rooms)
@@ -140,7 +140,7 @@ namespace Controller
         {
             foreach (Person person in movableEntities)
             {
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1)) != null)
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1) && p.CurrentRoom == null) != null)
                 {
                     Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1));
                     logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
@@ -152,7 +152,7 @@ namespace Controller
 
                     statsAggregator.AddPeopleTooClose(person, otherPerson);
                 }
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1)) != null)
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1) && p.CurrentRoom == null) != null)
                 {
                     Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1));
                     logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
@@ -164,7 +164,7 @@ namespace Controller
 
                     statsAggregator.AddPeopleTooClose(person, otherPerson);
                 }
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y)) != null)
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y) && p.CurrentRoom == null) != null)
                 {
                     Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y));
                     logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
@@ -176,7 +176,7 @@ namespace Controller
 
                     statsAggregator.AddPeopleTooClose(person, otherPerson);
                 }
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y)) != null)
+                if (movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y) && p.CurrentRoom == null) != null)
                 {
                     Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y));
                     logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
