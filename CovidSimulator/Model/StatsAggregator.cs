@@ -59,7 +59,7 @@ namespace Model
             int maxPrint = 5;
             int count = 0;
 
-            foreach (var element in temp.OrderBy(x => x.Value))
+            foreach (var element in temp.OrderBy(x => x.Value).Reverse())
             {
                 if (++count > maxPrint) { break; }
 
