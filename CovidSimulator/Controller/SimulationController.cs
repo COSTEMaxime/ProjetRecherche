@@ -201,9 +201,7 @@ namespace Controller
 
         private void redraw()
         {
-            List<DisplayableElement> elements = EntityDisplayConverter.ToDisplayableElements(rooms.ToList<IPosition>());
-            elements.AddRange(EntityDisplayConverter.ToDisplayableElements(movableEntities.ToList<IPosition>()));
-            simulationForm.refresh(elements);
+            simulationForm.refresh(EntityDisplayConverter.ToDisplayableElements(movableEntities.ToList<IPosition>()));
         }
 
         private List<Room> ListPossibleRooms(PersonTypes type)
