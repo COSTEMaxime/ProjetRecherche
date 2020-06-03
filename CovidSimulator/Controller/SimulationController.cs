@@ -140,53 +140,23 @@ namespace Controller
         {
             foreach (Person person in movableEntities)
             {
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1) && p.CurrentRoom == null) != null)
-                {
-                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1));
-                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
-                        person.Name,
-                        person.Position.X + ";" + person.Position.Y,
-                        otherPerson.Name,
-                        otherPerson.Position.X + ";" + otherPerson.Position.Y
-                    );
+                Person down = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y + 1));
+                Person up = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1));
+                Person right = movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y));
+                Person left = movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y));
 
-                    statsAggregator.AddPeopleTooClose(person, otherPerson);
+                addContact(person, down);
+                addContact(person, up);
+                addContact(person, right);
+                addContact(person, left);
+
+                if (down == null && up == null && left == null && right == null)
+                {
+                    person.ResetProba();
                 }
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1) && p.CurrentRoom == null) != null)
+                else
                 {
-                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X, person.Position.Y - 1));
-                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
-                        person.Name,
-                        person.Position.X + ";" + person.Position.Y,
-                        otherPerson.Name,
-                        otherPerson.Position.X + ";" + otherPerson.Position.Y
-                    );
-
-                    statsAggregator.AddPeopleTooClose(person, otherPerson);
-                }
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y) && p.CurrentRoom == null) != null)
-                {
-                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X + 1, person.Position.Y));
-                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
-                        person.Name,
-                        person.Position.X + ";" + person.Position.Y,
-                        otherPerson.Name,
-                        otherPerson.Position.X + ";" + otherPerson.Position.Y
-                    );
-
-                    statsAggregator.AddPeopleTooClose(person, otherPerson);
-                }
-                if (movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y) && p.CurrentRoom == null) != null)
-                {
-                    Person otherPerson = movableEntities.Find(p => p.Position == new Point(person.Position.X - 1, person.Position.Y));
-                    logger.Info("{0}, pos: {1}, came too close with {2}, pos: {3}",
-                        person.Name,
-                        person.Position.X + ";" + person.Position.Y,
-                        otherPerson.Name,
-                        otherPerson.Position.X + ";" + otherPerson.Position.Y
-                    );
-
-                    statsAggregator.AddPeopleTooClose(person, otherPerson);
+                    person.AddProba();
                 }
             }
 
@@ -196,6 +166,15 @@ namespace Controller
                 {
                     statsAggregator.AddOvercrowdedRoom(room);
                 }
+            }
+        }
+
+        private void addContact(Person person, Person other)
+        {
+            if (other != null && other.CurrentRoom == null)
+            {
+                statsAggregator.AddPeopleTooClose(person, other);
+                person.GiveVirus(other);
             }
         }
 

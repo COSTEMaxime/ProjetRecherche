@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 
 namespace Model
 {
@@ -47,7 +46,7 @@ namespace Model
                     else // Create Persons
                     {
                         string[] trimed = line.Substring(2).Split(',');
-                        
+
                         Room mainRoom = null;
 
                         if (trimed.Length == 4)
@@ -86,7 +85,7 @@ namespace Model
         public Person GeneratePerson(string personType, string posX, string posY, string name, Room mainRoom)
         {
             Person newPerson = PersonFactory.CreatePerson((PersonTypes)int.Parse(personType), new Point(int.Parse(posX), int.Parse(posY)), name, mainRoom);
-            if(mainRoom != null && newPerson.Position == mainRoom.Position)
+            if (mainRoom != null && newPerson.Position == mainRoom.Position)
                 mainRoom.EnterRoom(newPerson);
             return newPerson;
         }
