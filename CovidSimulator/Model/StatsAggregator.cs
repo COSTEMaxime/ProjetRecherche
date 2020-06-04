@@ -54,14 +54,15 @@ namespace Model
             }
 
             // print 5 entry max
-            int maxPrint = 5;
+            int maxPrint = 100;
             int count = 0;
 
             foreach (var element in temp.OrderBy(x => x.Value).Reverse())
             {
                 if (++count > maxPrint) { break; }
 
-                Console.WriteLine("{0}:\t{1}", element.Key.Name, element.Value);
+                //Console.WriteLine("{0}:\t{1}", element.Key.Name, element.Value);
+                Console.WriteLine("{0}", element.Value); // To put raw data in stats
             }
 
             int infectedCount = 0;
@@ -69,6 +70,8 @@ namespace Model
             {
                 if (element.Key.AsVirus) { infectedCount++; }
             }
+
+            Console.WriteLine("Total person with at least one contact: {0}", count);
 
             Console.WriteLine();
             Console.WriteLine("Number of people infected at the end of the simulation : {0}", infectedCount);

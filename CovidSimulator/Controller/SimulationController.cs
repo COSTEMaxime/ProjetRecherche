@@ -25,7 +25,7 @@ namespace Controller
         // each tick represents 30s
         private static int SIMULATION_MAX_TICK = 8 * 60 * 2;
         // delay between each tick
-        private static int TICK_SPEED_MS = 35;
+        private static int TICK_SPEED_MS = 25;
         private int tickCount;
 
         public SimulationController(SimulationForm simulationForm, List<List<Node>> grid, List<Person> movableEntities, List<Room> rooms)
@@ -57,7 +57,7 @@ namespace Controller
 
             update();
             stats();
-            redraw();
+            //redraw();
         }
 
         public void start()

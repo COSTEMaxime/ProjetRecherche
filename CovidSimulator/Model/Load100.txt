@@ -81,3 +81,4 @@
 /057,7,12,Ouranos
 /057,29,8,Pleiades1
 /057,31,8,Pleiades2
+/P057,31,8,Pleiades2,true

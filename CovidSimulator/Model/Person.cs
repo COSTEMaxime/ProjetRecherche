@@ -34,6 +34,7 @@ namespace Model
             Path = new Stack<Point>();
 
             rnd = new Random(Guid.NewGuid().GetHashCode());
+            AsVirus = false;
             virusSpreadProba = 1;
         }
 

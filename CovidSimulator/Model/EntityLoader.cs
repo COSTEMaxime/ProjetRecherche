@@ -30,7 +30,7 @@ namespace Model
                 }
                 else
                 {
-                    // Create Rooms
+                    // Create Room
                     if (line[1] == 'R')
                     {
                         string[] trimed = line.Substring(2).Split(',');
@@ -42,8 +42,26 @@ namespace Model
                         }
 
                         tempRooms.Add(new Room(new Point(int.Parse(trimed[0]), int.Parse(trimed[1])), trimed[2], int.Parse(trimed[3]), allowed));
+                    }// Create solo Person
+                    else if (line[1] == 'P')
+                    {
+                        string[] trimed = line.Substring(3).Split(',');
+
+                        Room mainRoom = null;
+
+                        if (trimed.Length >= 4)
+                            mainRoom = tempRooms.Find(r => r.Name == trimed[3]);
+
+                        string tempName = ((PersonTypes)int.Parse(line[2].ToString())).ToString() + (tempMoveable.Count + 1);
+
+                        Person tempPerson = GeneratePerson(line[2].ToString(), trimed[0], trimed[1], tempName, mainRoom);
+                        if (trimed.Length == 5)
+                            tempPerson.AsVirus = bool.Parse(trimed[4]);
+
+                        tempMoveable.Add(tempPerson);
+
                     }
-                    else // Create Persons
+                    else // Create multiple Persons
                     {
                         string[] trimed = line.Substring(2).Split(',');
 
