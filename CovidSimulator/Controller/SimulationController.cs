@@ -53,6 +53,7 @@ namespace Controller
                 timer.Stop();
 
                 statsAggregator.consoleDisplay();
+                generateHeightMap(statsAggregator.GetPositions());
             }
 
             update();
@@ -171,7 +172,7 @@ namespace Controller
 
         private void addContact(Person person, Person other)
         {
-            if (other != null && other.CurrentRoom == null)
+            if (person.CurrentRoom == null && other != null && other.CurrentRoom == null)
             {
                 statsAggregator.AddPeopleTooClose(person, other);
                 person.GiveVirus(other);
@@ -186,6 +187,19 @@ namespace Controller
         private List<Room> ListPossibleRooms(PersonTypes type)
         {
             return rooms.FindAll(room => room.Allowed.Contains(type));
+        }
+
+        private void generateHeightMap(IDictionary<Point, int> positions)
+        {
+            List<IPosition> entities = new List<IPosition>();
+            foreach (var position in positions)
+            {
+                entities.Add(new HeightMapNode(position.Key, position.Value));
+            }
+
+            List<DisplayableElement> elements = EntityDisplayConverter.ToDisplayableElements(entities);
+            elements.AddRange(EntityDisplayConverter.ToDisplayableElements(rooms.ToList<IPosition>(), Color.Violet));
+            simulationForm.refresh(elements);
         }
 
         protected virtual void Dispose(bool disposing)

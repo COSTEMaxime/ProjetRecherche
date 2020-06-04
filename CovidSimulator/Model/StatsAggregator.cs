@@ -83,5 +83,23 @@ namespace Model
                 Console.WriteLine("{0} was overcrowded for {1} ticks (Authorized : {2}, max : {3})", element.Key.Name, element.Value, element.Key.NbMaxPeople, element.Key.AllTimeMax);
             }
         }
+
+        public IDictionary<Point, int> GetPositions()
+        {
+            IDictionary<Point, int> temp = new Dictionary<Point, int>();
+            foreach (var pos in people)
+            {
+                if (temp.ContainsKey(pos.Item2))
+                {
+                    temp[pos.Item2]++;
+                }
+                else
+                {
+                    temp.Add(pos.Item2, 1);
+                }
+            }
+
+            return temp;
+        }
     }
 }

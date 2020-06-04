@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administration.cs" />
+    <Compile Include="HeightMapNode.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="EntityLoader.cs" />
     <Compile Include="PersonTypes.cs" />

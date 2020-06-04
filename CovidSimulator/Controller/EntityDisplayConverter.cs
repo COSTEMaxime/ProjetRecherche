@@ -1,4 +1,5 @@
 ﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using View;
@@ -7,18 +8,40 @@ namespace Controller
 {
     public class EntityDisplayConverter
     {
-        static DisplayableElement ToDisplayableElement(IPosition source)
+        static DisplayableElement ToDisplayableElement(IPosition source, Color? forceColor)
         {
             Color? color = null;
             Image image = null;
 
-            if (source is Room)
+            if (forceColor != null)
+            {
+                color = forceColor;
+            }
+            else if (source is Room)
             {
                 color = Color.Red;
             }
             else if (source is Person)
             {
                 color = Color.Blue;
+            }
+            else if (source is HeightMapNode)
+            {
+                HeightMapNode source_ = source as HeightMapNode;
+
+                color = Color.Red;
+                if (source_.ContactCount < HeightMapNode.MaxCountatCount * 0.25)
+                {
+                    color = Color.Green;
+                }
+                else if (source_.ContactCount < HeightMapNode.MaxCountatCount * 0.50)
+                {
+                    color = Color.Yellow;
+                }
+                else if (source_.ContactCount < HeightMapNode.MaxCountatCount * 0.75)
+                {
+                    color = Color.Orange;
+                }
             }
             else
             {
@@ -55,12 +78,12 @@ namespace Controller
             }
         }
 
-        public static List<DisplayableElement> ToDisplayableElements(List<IPosition> source)
+        public static List<DisplayableElement> ToDisplayableElements(List<IPosition> source, Color? forceColor = null)
         {
             List<DisplayableElement> displayableElements = new List<DisplayableElement>();
             foreach (IPosition position in source)
             {
-                displayableElements.Add(ToDisplayableElement(position));
+                displayableElements.Add(ToDisplayableElement(position, forceColor));
             }
 
             return displayableElements;
